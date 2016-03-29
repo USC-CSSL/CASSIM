@@ -1,0 +1,7 @@
+1- Make sure you download stanford-parser for python from http://nlp.stanford.edu/software/lex-parser.shtml#Download
+2- Extract the jar file and put it in CASSIM folder.
+
+3- Example for calculating syntax similarity of two documents using CASSIM:
+from CASSIM import Cassim
+myCassim = Cassim()
+print myCassim.minweight_edit_distance("Colorless green ideas sleep furiously. Whereof one cannot speak, thereof one must be silent.","Those who cannot remember the past are condemned to compute it. Language disguises thought.")
