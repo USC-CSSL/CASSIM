@@ -1,7 +1,11 @@
-1- Make sure you download stanford-parser for python from http://nlp.stanford.edu/software/lex-parser.shtml#Download
-2- Extract the jar file and put it in CASSIM folder.
+1- Make sure you download stanford-parser, version 3.5.2, from http://nlp.stanford.edu/software/lex-parser.shtml
+2- Extract the zip file and put the entire folder into CASSIM folder and rename the folder to "jars".
+3- Inside the jars folder, unzip stanford-parser-3.5.2-models.jar
+4- The englishPCFG.ser.gz file can be found inside the stanford-parser-3.5.2-models folder (/edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz)
+5- Copy the englishPCFG.ser.gz file into the jars folder
+6- You're ready to go!
 
-3- Example for calculating syntax similarity of two documents using CASSIM:
+Example for calculating syntax similarity of two documents using CASSIM:
 from CASSIM import Cassim
 myCassim = Cassim()
 print myCassim.minweight_edit_distance("Colorless green ideas sleep furiously. Whereof one cannot speak, thereof one must be silent.","Those who cannot remember the past are condemned to compute it. Language disguises thought.")
