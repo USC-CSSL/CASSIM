@@ -1,3 +1,4 @@
+__author__ = 'reihane'
 import sklearn.utils.linear_assignment_ as su
 import numpy as np
 import sys
@@ -26,7 +27,7 @@ class Cassim:
                 self.convert_mytree(node,tempnode)
         return pnode
 
-    def minweight_edit_distance(self, doc1, doc2):
+    def minweight_edit_distance(self, doc1, doc2, average):
         global numnodes
         doc1sents = self.sent_detector.tokenize(doc1.strip())
         doc2sents = self.sent_detector.tokenize(doc2.strip())
@@ -56,37 +57,40 @@ class Cassim:
                 temp_costMatrix.append(ED)
             costMatrix.append(temp_costMatrix)
         costMatrix = np.array(costMatrix)
-        rownum= costMatrix.shape[0]
-        colnum = costMatrix.shape[1]
-        if rownum > colnum:
-            costMatrixRandom = costMatrix[np.random.randint(rownum, size=colnum),:]
+        if average==True:
+            return 1-np.mean(costMatrix)
         else:
-            costMatrixRandom = costMatrix[:,np.random.randint(colnum, size=rownum)]
-    
-        indexes = su.linear_assignment(costMatrix)
-        total = 0
-        minWeight = 0
-        rowMarked = [0] * len(doc1parsed)
-        colMarked = [0] * len(doc2parsed)
-        for row, column in indexes:
-            total += costMatrix[row][column]
-            rowMarked[row] = 1
-            colMarked [column] = 1
-        minWeight = total
-    
-        for k in range(len(rowMarked)):
-            if rowMarked[k]==0:
-                total+= np.min(costMatrix[k])
-        for c in range(len(colMarked)):
-            if colMarked[c]==0:
-                total+= np.min(costMatrix[:,c])
-        maxlengraph = max(len(doc1parsed),len(doc2parsed))
-        minlengraph = min(len(doc1parsed),len(doc2parsed))
-    
-        indexes = su.linear_assignment(costMatrixRandom)
-        randtotal = 0
-        for row, column in indexes:
-            randtotal +=costMatrixRandom[row][column]
-        lengraph = costMatrixRandom.shape[0]
-    
-        return total/maxlengraph#, minWeight/minlengraph, randtotal/lengraph
+            rownum= costMatrix.shape[0]
+            colnum = costMatrix.shape[1]
+            if rownum > colnum:
+                costMatrixRandom = costMatrix[np.random.randint(rownum, size=colnum),:]
+            else:
+                costMatrixRandom = costMatrix[:,np.random.randint(colnum, size=rownum)]
+
+            indexes = su.linear_assignment(costMatrix)
+            total = 0
+            minWeight = 0
+            rowMarked = [0] * len(doc1parsed)
+            colMarked = [0] * len(doc2parsed)
+            for row, column in indexes:
+                total += costMatrix[row][column]
+                rowMarked[row] = 1
+                colMarked [column] = 1
+            minWeight = total
+
+            for k in range(len(rowMarked)):
+                if rowMarked[k]==0:
+                    total+= np.min(costMatrix[k])
+            for c in range(len(colMarked)):
+                if colMarked[c]==0:
+                    total+= np.min(costMatrix[:,c])
+            maxlengraph = max(len(doc1parsed),len(doc2parsed))
+            minlengraph = min(len(doc1parsed),len(doc2parsed))
+
+            indexes = su.linear_assignment(costMatrixRandom)
+            randtotal = 0
+            for row, column in indexes:
+                randtotal +=costMatrixRandom[row][column]
+            lengraph = costMatrixRandom.shape[0]
+
+            return 1-total/maxlengraph#, minWeight/minlengraph, randtotal/lengraph
