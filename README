@@ -1,3 +1,4 @@
+Installation:
 1- Make sure you download stanford-parser, version 3.5.2, from http://nlp.stanford.edu/software/lex-parser.shtml
 2- Extract the zip file and put the entire folder into CASSIM folder and rename the folder to "jars".
 3- Inside the jars folder, unzip stanford-parser-3.5.2-models.jar
@@ -5,7 +6,24 @@
 5- Copy the englishPCFG.ser.gz file into the jars folder
 6- You're ready to go!
 
-Example for calculating syntax similarity of two documents using CASSIM:
+Usage:
+CASSIM has four functions which are optimized for different situations: 
+1- syntax_similarity_two_documents(d1, d2): Calculates the syntax similarity between two signle documents, d1 and d2.
+2- syntax_similarity_two_lists(list1, list2): Calculates the syntax similarity between two list of documents, list1 and list2. That is it calculates the syntax similarity of each document in list1 to each document in list2.
+3- syntax_similarity_conversation (list1): Calculates the syntax similarity of each document to its next document in the list. This function is specifically suited for conversations. Assume a conversation where A starts the conversation, B responds to it, A responds back, and C reponds to A (A->B->A->C). This function will calculate similarity of A->B, B->A, and A->C.
+4- syntax_similarity_one_list(list1): Calculate the syntax similarity of each document in the list to all other documents in the list.
+Note that the main function is syntax_similarity_two_documents() and others are just optimized versions which are dedicated to special situations.
+If you wish to use average mechanism, you can pass average=True as an input to each of the four functions mentioned above.
+
+Example:
+Simple example for calculating syntax similarity of two documents using CASSIM:
 from CASSIM import Cassim
 myCassim = Cassim()
-print myCassim.minweight_edit_distance("Colorless green ideas sleep furiously. Whereof one cannot speak, thereof one must be silent.","Those who cannot remember the past are condemned to compute it. Language disguises thought.")
+print myCassim.syntax_similarity_two_documents("Colorless green ideas sleep furiously. Whereof one cannot speak, thereof one must be silent.","Those who cannot remember the past are condemned to compute it. Language disguises thought.")
+
+Contact:
+For any questions please contact boghrati AT usc DOT edu
+
+References:
+[1] R. Boghrati, J. Hoover, K. M. Johnson, J. Garten, M. Dehghani, "Conversation Level Syntax Similarity Metric", Under revision at Behavior Research Methods.
+[2] R. Boghrati, J. Hoover, K. Johnson, J. Garten, M. Dehghani, "Syntax Accommodation in Social Media Conversations", Proceedings of CogSci 2016.
